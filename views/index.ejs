@@ -1,8 +1,41 @@
 <div class="text-center">
     <h1 class="display-4 text-success">🐆 Brasil Selvagem</h1>
     <p class="lead"><%= message %></p>
-    <div class="mt-4">
-        <a href="/login" class="btn btn-success me-2">Login</a>
-        <a href="/register" class="btn btn-outline-success">Registrar</a>
+    
+    <% if (typeof usuario !== 'undefined') { %>
+        <div class="alert alert-success">
+            <h4>Bem-vindo, <%= usuario.nome %>!</h4>
+            <p>Nível: <%= usuario.nivel %> | Pontos: <%= usuario.pontos %></p>
+        </div>
+    <% } %>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Quiz</h5>
+                    <p class="card-text">Teste seus conhecimentos</p>
+                    <a href="/quiz" class="btn btn-success">Começar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🌿 Biomas</h5>
+                    <p class="card-text">Conheça nossa fauna</p>
+                    <a href="/biomas" class="btn btn-outline-success">Explorar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🏆 Ranking</h5>
+                    <p class="card-text">Veja os melhores</p>
+                    <a href="/ranking" class="btn btn-outline-success">Ver</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

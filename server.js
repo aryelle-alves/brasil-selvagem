@@ -2,43 +2,56 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 
-const app = express();
-const PORT = 3000;
+// Conexão com banco de dados
+const banco = require('./banco-dados/conexao');
+
+const aplicativo = express();
+const PORTA = 3000;
 
 // Configuração do EJS
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+aplicativo.set('view engine', 'ejs');
+aplicativo.set('views', path.join(__dirname, 'views'));
 
 // Middlewares
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static('public'));
+aplicativo.use(express.urlencoded({ extended: true }));
+aplicativo.use(express.json());
+aplicativo.use(express.static('public'));
 
 // Configuração de sessões
-app.use(session({
-    secret: 'brasil-selvagem-secret-key-2025',
+aplicativo.use(session({
+    secret: 'chave-secreta-brasil-selvagem-2025',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 horas
 }));
 
-// Rota principal
-app.get('/', (req, res) => {
-    res.render('index', { 
-        title: 'Brasil Selvagem',
-        message: 'Bem-vindo à plataforma!'
+// Rotas principais
+aplicativo.get('/', (requisicao, resposta) => {
+    resposta.render('index', { 
+        titulo: 'Brasil Selvagem',
+        mensagem: 'Bem-vindo à plataforma!'
     });
 });
 
-app.get('/login', (req, res) => {
-    res.render('login', { title: 'Login' });
+aplicativo.get('/login', (requisicao, resposta) => {
+    resposta.render('login', { titulo: 'Login' });
 });
 
-app.get('/register', (req, res) => {
-    res.render('register', { title: 'Registro' });
+aplicativo.get('/register', (requisicao, resposta) => {
+    resposta.render('register', { titulo: 'Registro' });
+});
+
+// Rota de teste
+aplicativo.get('/teste', (requisicao, resposta) => {
+    resposta.send('✅ Servidor funcionando perfeitamente!');
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+aplicativo.listen(PORTA, () => {
+    console.log(`🚀 Servidor rodando em http://localhost:${PORTA}`);
+    console.log('📁 Rotas disponíveis:');
+    console.log('   http://localhost:3000');
+    console.log('   http://localhost:3000/login');
+    console.log('   http://localhost:3000/register');
+    console.log('   http://localhost:3000/teste');
 });
