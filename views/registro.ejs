@@ -1,0 +1,93 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center">📝 Registrar</h2>
+                
+                <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: action, method, onsubmit ⬇️⬇️⬇️ -->
+                <form action="/registro" method="POST" onsubmit="return validarRegistro()">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome completo</label>
+                        <!-- ⬇️ ADICIONAR: name="nome" e id="nome" -->
+                        <input type="text" class="form-control" name="nome" id="nome" required 
+                               placeholder="Digite seu nome completo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <!-- ⬇️ ADICIONAR: name="email" e id="email" -->
+                        <input type="email" class="form-control" name="email" id="email" required
+                               placeholder="exemplo@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <!-- ⬇️ ADICIONAR: name="senha" e id="senha" -->
+                        <input type="password" class="form-control" name="senha" id="senha" required
+                               placeholder="Mínimo 6 caracteres">
+                    </div>
+                    
+                    <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: Mensagem de erro/sucesso ⬇️⬇️⬇️ -->
+                    <% if (typeof erro !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <strong>Erro:</strong> <%= erro %>
+                        </div>
+                    <% } %>
+                    
+                    <% if (typeof sucesso !== 'undefined') { %>
+                        <div class="alert alert-success mt-3">
+                            <strong>Sucesso!</strong> <%= sucesso %>
+                        </div>
+                    <% } %>
+                    
+                    <button type="submit" class="btn btn-success w-100">Criar Conta</button>
+                </form>
+                
+                <p class="text-center mt-3">
+                    Já tem conta? <a href="/login">Faça login aqui</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ⬇️⬇️⬇️ ADICIONAR AQUI NO FINAL: Script de validação JavaScript ⬇️⬇️⬇️ -->
+<script>
+function validarRegistro() {
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    
+    // Validação básica - campos vazios
+    if (!nome || !email || !senha) {
+        alert('❌ Por favor, preencha todos os campos!');
+        return false;
+    }
+    
+    // Validação de nome (mínimo 3 caracteres)
+    if (nome.length < 3) {
+        alert('❌ O nome deve ter pelo menos 3 caracteres!');
+        return false;
+    }
+    
+    // Validação de email
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexEmail.test(email)) {
+        alert('❌ Por favor, insira um email válido! (exemplo@email.com)');
+        return false;
+    }
+    
+    // Validação de senha
+    if (senha.length < 6) {
+        alert('❌ A senha deve ter no mínimo 6 caracteres!');
+        return false;
+    }
+    
+    // Senha muito comum (opcional)
+    const senhasFracas = ['123456', 'senha', 'password', '12345678', 'qwerty'];
+    if (senhasFracas.includes(senha.toLowerCase())) {
+        if (!confirm('⚠️ Esta senha é muito comum. Deseja continuar mesmo assim?')) {
+            return false;
+        }
+    }
+    return true; // Formulário pode ser enviado
+}
+</script>

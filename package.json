@@ -7,7 +7,12 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["educação", "fauna", "brasil", "quiz"],
+  "keywords": [
+    "educação",
+    "fauna",
+    "brasil",
+    "quiz"
+  ],
   "author": "Seu Nome",
   "license": "ISC",
   "dependencies": {

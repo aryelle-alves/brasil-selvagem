@@ -1,0 +1,128 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">✏️ Editar Meu Perfil</h4>
+            </div>
+            
+            <div class="card-body">
+                <!-- Mensagens de Sucesso/Erro -->
+                <% if (erro) { %>
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <strong>⚠️ Erro:</strong> <%= erro %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                
+                <% if (sucesso) { %>
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>✅ Sucesso!</strong> <%= sucesso %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                
+                <!-- Formulário de Edição -->
+                <form action="/perfil/atualizar" method="POST" onsubmit="return validarEdicao()">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" name="nome" 
+                               value="<%= usuario.nome %>" required
+                               placeholder="Digite seu nome completo">
+                        <div class="form-text">Como você quer ser chamado na plataforma.</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="<%= usuario.email %>" required
+                               placeholder="seu.email@exemplo.com">
+                        <div class="form-text">Seu email de login. Deve ser único.</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/perfil" class="btn btn-outline-secondary me-md-2">
+                            ← Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            💾 Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <!-- Área de Exclusão de Conta -->
+                <div class="alert alert-danger border-danger">
+                    <h5 class="alert-heading">⚠️ Zona de Perigo</h5>
+                    <p class="mb-2">
+                        <strong>Atenção!</strong> Ao deletar sua conta:
+                    </p>
+                    <ul class="mb-3">
+                        <li>Todos os seus dados serão <strong>permanentemente</strong> removidos</li>
+                        <li>Seu progresso será perdido</li>
+                        <li>Esta ação <strong>NÃO pode ser desfeita</strong></li>
+                    </ul>
+                    
+                    <form action="/perfil/deletar" method="POST" 
+                          onsubmit="return confirmarExclusao()">
+                        <div class="mb-3">
+                            <label for="confirmacao" class="form-label">
+                                Digite <span class="badge bg-dark">CONFIRMAR</span> para continuar:
+                            </label>
+                            <input type="text" class="form-control text-center" 
+                                   id="confirmacao" name="confirmacao" 
+                                   required autocomplete="off"
+                                   placeholder="CONFIRMAR">
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">
+                            🗑️ Deletar Minha Conta
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <a href="/perfil" class="btn btn-outline-success btn-sm">
+                        ← Voltar ao Perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts de Validação -->
+<script>
+function validarEdicao() {
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    if (!nome || !email) {
+        alert('❌ Por favor, preencha todos os campos!');
+        return false;
+    }
+    
+    if (nome.length < 3) {
+        alert('❌ O nome deve ter pelo menos 3 caracteres!');
+        return false;
+    }
+    
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexEmail.test(email)) {
+        alert('❌ Por favor, insira um email válido! (exemplo@email.com)');
+        return false;
+    }
+    
+    return true;
+}
+
+function confirmarExclusao() {
+    const confirmacao = document.getElementById('confirmacao').value;
+    
+    if (confirmacao !== 'CONFIRMAR') {
+        alert('❌ Você deve digitar exatamente "CONFIRMAR" para deletar a conta.');
+        return false;
+    }
+    
+    return confirm('⚠️ Tem certeza que quer DELETAR SUA CONTA? Esta ação é IRREVERSÍVEL!');
+}
+</script>

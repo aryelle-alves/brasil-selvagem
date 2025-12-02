@@ -1,0 +1,39 @@
+<div class="text-center">
+    <h1 class="display-5">👤 Meu Perfil</h1>
+    
+    <!-- ✅ PARTE 1: MENSAGENS (SUCESSO/ERRO) -->
+    <% if (typeof query !== 'undefined' && query.sucesso) { %>
+        <div class="alert alert-success alert-dismissible fade show w-75 mx-auto">
+            <strong>✅ Sucesso!</strong> <%= query.sucesso %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+    
+    <% if (typeof query !== 'undefined' && query.erro) { %>
+        <div class="alert alert-danger alert-dismissible fade show w-75 mx-auto">
+            <strong>⚠️ Erro:</strong> <%= query.erro %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+    
+    <div class="card mt-4 mx-auto" style="max-width: 500px;">
+        <div class="card-body">
+            <h5 class="card-title">Informações do Usuário</h5>
+            <p><strong>Nome:</strong> <%= usuario.nome %></p>
+            <p><strong>Email:</strong> <%= usuario.email %></p>
+            <p><strong>Nível:</strong> <span class="badge bg-success"><%= usuario.nivel %></span></p>
+            <p><strong>Pontos:</strong> <span class="badge bg-warning text-dark"><%= usuario.pontos %> pts</span></p>
+            
+            <!-- ✅ PARTE 2: BOTÕES (COM O BOTÃO DE EDIÇÃO) -->
+            <div class="mt-4">
+                <a href="/quiz" class="btn btn-success">🎯 Fazer Quiz</a>
+                
+                <!-- ✅ BOTÃO DE EDIÇÃO (ADICIONE ESTE!) -->
+                <a href="/perfil/editar" class="btn btn-outline-primary">✏️ Editar Perfil</a>
+                
+                <a href="/biomas" class="btn btn-outline-success">🌿 Ver Biomas</a>
+                <a href="/logout" class="btn btn-outline-danger">🚪 Sair</a>
+            </div>
+        </div>
+    </div>
+</div>

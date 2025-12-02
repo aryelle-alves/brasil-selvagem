@@ -3,18 +3,62 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title text-center">🔐 Login</h2>
-                <form>
+                
+                <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: action, method, onsubmit e name nos inputs ⬇️⬇️⬇️ -->
+                <form action="/login" method="POST" onsubmit="return validarLogin()">
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" required>
+                        <label for="email" class="form-label">Email</label>
+                        <!-- ⬇️ ADICIONAR: name="email" e id="email" -->
+                        <input type="email" class="form-control" name="email" id="email" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Senha</label>
-                        <input type="password" class="form-control" required>
+                        <label for="senha" class="form-label">Senha</label>
+                        <!-- ⬇️ ADICIONAR: name="senha" e id="senha" -->
+                        <input type="password" class="form-control" name="senha" id="senha" required>
                     </div>
+                    
+                    <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: Mensagem de erro (se existir) ⬇️⬇️⬇️ -->
+                    <% if (typeof erro !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <strong>Erro:</strong> <%= erro %>
+                        </div>
+                    <% } %>
+                    
                     <button type="submit" class="btn btn-success w-100">Entrar</button>
                 </form>
+                
+                <p class="text-center mt-3">
+                    Não tem conta? <a href="/registro">Registre-se aqui</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- ⬇️⬇️⬇️ ADICIONAR AQUI NO FINAL: Script de validação JavaScript ⬇️⬇️⬇️ -->
+<script>
+function validarLogin() {
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    
+    // Validação básica
+    if (!email || !senha) {
+        alert('❌ Por favor, preencha todos os campos!');
+        return false;
+    }
+    
+    // Validação de email simples
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('❌ Por favor, insira um email válido!');
+        return false;
+    }
+    
+    // Validação de senha (mínimo 6 caracteres)
+    if (senha.length < 6) {
+        alert('❌ A senha deve ter no mínimo 6 caracteres!');
+        return false;
+    }
+    
+    return true; // Formulário pode ser enviado
+}
+</script>

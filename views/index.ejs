@@ -1,6 +1,6 @@
 <div class="text-center">
     <h1 class="display-4 text-success">🐆 Brasil Selvagem</h1>
-    <p class="lead"><%= message %></p>
+    <p class="lead"><%= mensagem %></p>
     
     <% if (typeof usuario !== 'undefined') { %>
         <div class="alert alert-success">
@@ -8,6 +8,24 @@
             <p>Nível: <%= usuario.nivel %> | Pontos: <%= usuario.pontos %></p>
         </div>
     <% } %>
+
+    <div class="mt-5">
+        <h3>Explore nossa plataforma</h3>
+        <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+            <a href="/login" class="btn btn-success btn-lg">
+                <i class="bi bi-box-arrow-in-right"></i> 🔐 Login
+            </a>
+            <a href="/registro" class="btn btn-outline-success btn-lg">
+                <i class="bi bi-person-plus"></i> 📝 Registrar
+            </a>
+            <a href="/biomas" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-tree"></i> 🌿 Biomas
+            </a>
+            <a href="/quiz" class="btn btn-warning btn-lg">
+                <i class="bi bi-question-circle"></i> 🎯 Quiz
+            </a>
+        </div>
+    </div>
     
     <div class="row mt-5">
         <div class="col-md-4">
@@ -38,4 +56,14 @@
             </div>
         </div>
     </div>
+
+    <div class="alert alert-info mt-5">
+        <h4>📚 Sobre o Projeto</h4>
+        <p><strong>Brasil Selvagem</strong> é uma plataforma educativa gamificada sobre a fauna brasileira, desenvolvida como projeto integrador do curso de Sistemas para Internet.</p>
+        <p class="mb-0">
+            <a href="/registro" class="btn btn-sm btn-success me-2">Crie sua conta gratuita</a>
+            ou <a href="/biomas" class="btn btn-sm btn-outline-info">explore o conteúdo</a>
+        </p>
+    </div>
+
 </div>

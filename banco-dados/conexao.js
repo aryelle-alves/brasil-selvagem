@@ -31,21 +31,65 @@ function criarTabelas() {
             console.log('✅ Tabela usuarios criada/verificada');
         }
     });
+}
 
-    // Tabela de animais
-    banco.run(`CREATE TABLE IF NOT EXISTS animais (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        bioma TEXT NOT NULL,
-        descricao TEXT,
-        curiosidade TEXT
-    )`, (erro) => {
-        if (erro) {
-            console.error('❌ Erro criar tabela animais:', erro);
-        } else {
-            console.log('✅ Tabela animais criada/verificada');
-        }
+// C - CREATE Usuário (nome, email, senha)
+function inserirUsuario(nome, email, senhaHash, callback) {
+    const sql = `INSERT INTO usuarios (nome, email, senha_hash) VALUES (?, ?, ?)`;
+    banco.run(sql, [nome, email, senhaHash], function(erro) {
+        callback(erro, this.lastID);
     });
 }
 
-module.exports = banco;
+// R - READ Usuário (nome, email, senha)
+function buscarUsuarioPorEmail(email, callback) {
+    const sql = `SELECT * FROM usuarios WHERE email = ?`;
+    banco.get(sql, [email], callback);
+}
+
+function buscarUsuarioPorId(id, callback) {
+    const sql = `SELECT * FROM usuarios WHERE id = ?`;
+    banco.get(sql, [id], callback);
+}
+
+// U - UPDATE Usuário (nome, email, senha)
+function atualizarUsuario(usuarioId, novoNome, novoEmail, callback) {
+    const sql = `UPDATE usuarios SET nome = ?, email = ? WHERE id = ?`;
+    console.log('🔧 Atualizando usuário ID:', usuarioId, 'Para:', novoNome, novoEmail);
+    
+    banco.run(sql, [novoNome, novoEmail, usuarioId], function(erro) {
+        if (erro) {
+            console.error('❌ Erro ao atualizar usuário:', erro.message);
+        } else {
+            console.log('✅ Usuário atualizado. Mudanças:', this.changes);
+        }
+        callback(erro, this.changes);
+    });
+}
+
+// D - DELETE Usuário
+function deletarUsuario(usuarioId, callback) {
+    const sql = `DELETE FROM usuarios WHERE id = ?`;
+    console.log('🗑️  Deletando usuário ID:', usuarioId);
+    
+    banco.run(sql, [usuarioId], function(erro) {
+        if (erro) {
+            console.error('❌ Erro ao deletar usuário:', erro.message);
+        } else {
+            console.log('✅ Usuário deletado. Mudanças:', this.changes);
+        }
+        callback(erro, this.changes);
+    });
+}
+
+// ============================================
+// EXPORTE TODAS AS FUNÇÕES
+// ============================================
+module.exports = {
+    banco,
+    inserirUsuario,      // CREATE
+    buscarUsuarioPorEmail, // READ
+    buscarUsuarioPorId,    // READ
+    atualizarUsuario,    // UPDATE
+    deletarUsuario       // DELETE
+};
