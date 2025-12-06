@@ -1,0 +1,25 @@
+# Como Instalar e Executar
+
+## Pré-requisitos
+- **Node.js** (versão 18 ou superior)  
+- **Git** (opcional, para clonar o projeto)  
+- **NPM** (já vem com o Node.js)
+
+---
+
+## Passos para instalar
+
+### 1. Baixe o Node.js
+- Acesse: https://nodejs.org/
+- Baixe e instale a versão **LTS**
+
+### 2. Clone ou baixe o projeto
+
+### 3. Instale as dependências
+Abra o terminal na pasta do projeto e execute:
+
+```bash
+npm install
+npm run dev
+
+### Depois acesse no navegador: **http://localhost:3000**
