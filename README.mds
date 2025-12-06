@@ -1,9 +1,10 @@
 # Como Instalar e Executar
 
-## Pré-requisitos
-- **Node.js** (versão 18 ou superior)  
-- **Git** (opcional, para clonar o projeto)  
-- **NPM** (já vem com o Node.js)
+- **Node.js** (versão 18 ou superior)
+- **Git** (opcional, para clonar o projeto)
+- **NPM** (vem com o Node.js)
+- **SQLite** instalado localmente  
+  - Baixe em: https://www.sqlite.org/download.html 
 
 ---
 
@@ -20,6 +21,7 @@ Abra o terminal na pasta do projeto e execute:
 
 ```bash
 npm install
+npm install sqlit3
 npm run dev
 
 ### Depois acesse no navegador: **http://localhost:3000**
