@@ -1,64 +1,233 @@
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title text-center">🔐 Login</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Brasil Selvagem</title>
+    
+    <!-- CSS CORRETO -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos específicos para login */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #166534, #22c55e);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .auth-body {
+            padding: 2rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-success {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-success:hover {
+            background: #166534;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-verde {
+            color: #22c55e;
+        }
+        
+        .mt-3 {
+            margin-top: 1rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-danger {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a class="navbar-brand" href="/">
+                    <span class="navbar-icon">🌳</span>
+                    <span class="navbar-text">Brasil Selvagem</span>
+                </a>
                 
-                <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: action, method, onsubmit e name nos inputs ⬇️⬇️⬇️ -->
-                <form action="/login" method="POST" onsubmit="return validarLogin()">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <!-- ⬇️ ADICIONAR: name="email" e id="email" -->
-                        <input type="email" class="form-control" name="email" id="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="senha" class="form-label">Senha</label>
-                        <!-- ⬇️ ADICIONAR: name="senha" e id="senha" -->
-                        <input type="password" class="form-control" name="senha" id="senha" required>
-                    </div>
+                <div class="navbar-menu d-flex gap-3 align-items-center">
+                    <a href="/" class="navbar-link">Início</a>
+                    <a href="/biomas" class="navbar-link">Biomas</a>
+                    <a href="/quiz" class="navbar-link">Quiz</a>
+                    <a href="/ranking" class="navbar-link">Ranking</a>
                     
-                    <!-- ⬇️⬇️⬇️ ADICIONAR AQUI: Mensagem de erro (se existir) ⬇️⬇️⬇️ -->
-                    <% if (typeof erro !== 'undefined') { %>
-                        <div class="alert alert-danger mt-3">
+                    <a href="/login" class="btn btn-primary btn-sm">Entrar</a>
+                    <a href="/registro" class="btn btn-secondary btn-sm">Registrar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="auth-container">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+                    <p>Acesse sua conta para continuar</p>
+                </div>
+                
+                <div class="auth-body">
+                    <!-- Mensagem de erro -->
+                    <% if (typeof erro !== 'undefined' && erro) { %>
+                        <div class="alert alert-danger">
                             <strong>Erro:</strong> <%= erro %>
                         </div>
                     <% } %>
                     
-                    <button type="submit" class="btn btn-success w-100">Entrar</button>
-                </form>
-                
-                <p class="text-center mt-3">
-                    Não tem conta? <a href="/registro">Registre-se aqui</a>
-                </p>
+                    <form action="/login" method="POST" onsubmit="return validarLogin()">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" required
+                                   placeholder="seu@email.com">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" name="senha" id="senha" required
+                                   placeholder="Digite sua senha">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-sign-in-alt"></i> Entrar na Conta
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <p class="text-cinza-600">
+                            Não tem conta? 
+                            <a href="/registro" class="text-verde">Crie uma gratuitamente</a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- ⬇️⬇️⬇️ ADICIONAR AQUI NO FINAL: Script de validação JavaScript ⬇️⬇️⬇️ -->
-<script>
-function validarLogin() {
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
-    
-    // Validação básica
-    if (!email || !senha) {
-        alert('❌ Por favor, preencha todos os campos!');
-        return false;
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="text-white">Brasil Selvagem</h4>
+                    <p class="text-cinza-400">Educação ambiental interativa</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="text-white">Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/biomas">Biomas</a></li>
+                        <li><a href="/quiz">Quiz</a></li>
+                        <li><a href="/ranking">Ranking</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="text-white">Projeto</h4>
+                    <p class="text-cinza-400">
+                        Projeto Integrador<br>
+                        UNCISAL - 2025.2
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom text-center">
+                <p>&copy; 2025 Brasil Selvagem - Projeto acadêmico UNCISAL</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    function validarLogin() {
+        const email = document.getElementById('email').value.trim();
+        const senha = document.getElementById('senha').value;
+        
+        if (!email || !senha) {
+            alert('❌ Por favor, preencha todos os campos!');
+            return false;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('❌ Por favor, insira um email válido!');
+            return false;
+        }
+        
+        if (senha.length < 6) {
+            alert('❌ A senha deve ter no mínimo 6 caracteres!');
+            return false;
+        }
+        
+        return true;
     }
-    
-    // Validação de email simples
-    if (!email.includes('@') || !email.includes('.')) {
-        alert('❌ Por favor, insira um email válido!');
-        return false;
-    }
-    
-    // Validação de senha (mínimo 6 caracteres)
-    if (senha.length < 6) {
-        alert('❌ A senha deve ter no mínimo 6 caracteres!');
-        return false;
-    }
-    
-    return true; // Formulário pode ser enviado
-}
-</script>
+    </script>
+</body>
+</html>

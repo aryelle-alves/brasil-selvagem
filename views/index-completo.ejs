@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasil Selvagem</title>
+    
+    <!-- CSS da pasta views/css-2/ -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a class="navbar-brand" href="/">
+                    <span class="navbar-icon">🌳</span>
+                    <span class="navbar-text">Brasil Selvagem</span>
+                </a>
+                
+                <div class="navbar-menu d-flex gap-3 align-items-center">
+                    <a href="/" class="navbar-link">Início</a>
+                    <a href="/biomas" class="navbar-link">Biomas</a>
+                    <a href="/quiz" class="navbar-link">Quiz</a>
+                    <a href="/ranking" class="navbar-link">Ranking</a>
+                    
+                    <% if (usuario) { %>
+                        <a href="/perfil" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user"></i> <%= usuario.nome.split(' ')[0] %>
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="btn btn-primary btn-sm">Entrar</a>
+                        <a href="/registro" class="btn btn-secondary btn-sm">Registrar</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Mensagens -->
+            <% if (mensagem) { %>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> <%= mensagem %>
+                </div>
+            <% } %>
+            
+            <!-- Conteúdo da página -->
+            <div class="card shadow">
+                <h1 class="text-center text-verde-escuro mb-4">Bem-vindo ao Brasil Selvagem</h1>
+                
+                <% if (usuario) { %>
+                    <div class="card bg-verde-claro mb-4">
+                        <h2 class="text-verde-escuro">
+                            <i class="fas fa-user-circle"></i> Olá, <%= usuario.nome.split(' ')[0] %>!
+                        </h2>
+                        <div class="d-flex flex-wrap justify-content-between mt-3">
+                            <div class="text-center">
+                                <div class="fs-4 fw-bold text-verde"><%= usuario.nivel %></div>
+                                <small class="text-cinza-600">Nível</small>
+                            </div>
+                            <div class="text-center">
+                                <div class="fs-4 fw-bold text-laranja"><%= usuario.pontos %></div>
+                                <small class="text-cinza-600">Pontos</small>
+                            </div>
+                            <div class="text-center">
+                                <a href="/perfil" class="btn btn-primary btn-sm">Ver Perfil</a>
+                            </div>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="card bg-verde-claro mb-4">
+                        <p class="mb-3">
+                            <i class="fas fa-info-circle"></i> Crie sua conta gratuita para salvar seu progresso!
+                        </p>
+                        <div class="d-flex gap-2">
+                            <a href="/registro" class="btn btn-success flex-1">Registrar</a>
+                            <a href="/login" class="btn btn-outline-verde flex-1">Login</a>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <!-- Features Grid -->
+                <div class="d-flex flex-wrap gap-4 justify-content-center mt-5">
+                    <!-- Quiz -->
+                    <div class="card flex-1 minw-300">
+                        <div class="text-center mb-3">
+                            <div class="icon-circle bg-verde-claro text-verde">
+                                <i class="fas fa-question-circle fa-2x"></i>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-center text-verde-escuro mb-2">🎯 Quiz Interativo</h3>
+                        <p class="text-center text-cinza-600 mb-3">
+                            Teste seus conhecimentos sobre fauna brasileira.
+                        </p>
+                        
+                        <a href="/quiz" class="btn btn-primary btn-block">Começar Quiz</a>
+                    </div>
+                    
+                    <!-- Ranking -->
+                    <div class="card flex-1 minw-300">
+                        <div class="text-center mb-3">
+                            <div class="icon-circle bg-verde-claro text-verde">
+                                <i class="fas fa-trophy fa-2x"></i>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-center text-verde-escuro mb-2">🏆 Ranking</h3>
+                        <p class="text-center text-cinza-600 mb-3">
+                            Veja como você se compara com outros jogadores.
+                        </p>
+                        
+                        <a href="/ranking" class="btn btn-primary btn-block">Ver Ranking</a>
+                    </div>
+                    
+                    <!-- Biomas -->
+                    <div class="card flex-1 minw-300">
+                        <div class="text-center mb-3">
+                            <div class="icon-circle bg-verde-claro text-verde">
+                                <i class="fas fa-tree fa-2x"></i>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-center text-verde-escuro mb-2">🌳 Biomas</h3>
+                        <p class="text-center text-cinza-600 mb-3">
+                            Conheça os biomas brasileiros em detalhes.
+                        </p>
+                        
+                        <a href="/biomas" class="btn btn-secondary btn-block">Explorar Biomas</a>
+                    </div>
+                </div>
+                
+                <!-- Call to Action -->
+                <div class="text-center mt-5">
+                    <p class="text-cinza-600 mb-3">
+                        <i class="fas fa-graduation-cap"></i> Projeto educacional sobre biodiversidade
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        <a href="/quiz" class="btn btn-success btn-lg">
+                            <i class="fas fa-play"></i> Começar Agora
+                        </a>
+                        <% if (!usuario) { %>
+                            <a href="/registro" class="btn btn-outline-verde btn-lg">
+                                <i class="fas fa-user-plus"></i> Criar Conta
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="text-white">Brasil Selvagem</h4>
+                    <p class="text-cinza-400">Educação ambiental interativa</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="text-white">Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/biomas">Biomas</a></li>
+                        <li><a href="/quiz">Quiz</a></li>
+                        <li><a href="/ranking">Ranking</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="text-white">Projeto</h4>
+                    <p class="text-cinza-400">
+                        Projeto Integrador<br>
+                        UNCISAL - 2025.2
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom text-center">
+                <p>&copy; 2025 Brasil Selvagem - Projeto acadêmico UNCISAL</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Estilos específicos -->
+    <style>
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .minw-300 {
+            min-width: 300px;
+        }
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .btn-outline-verde {
+            background: transparent;
+            color: var(--verde-principal);
+            border: 2px solid var(--verde-principal);
+        }
+        
+        .btn-outline-verde:hover {
+            background: var(--verde-principal);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .d-flex {
+                flex-direction: column;
+            }
+            
+            .minw-300 {
+                min-width: 100%;
+            }
+            
+            .navbar-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>

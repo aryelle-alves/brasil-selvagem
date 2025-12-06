@@ -1,51 +1,93 @@
+// rotas/paginas.rotas.js
 const express = require('express');
 const router = express.Router();
-const { buscarUsuarioPorId } = require('../banco-dados/conexao');
 
-// Página inicial
+// Importar função do banco de dados
+const { buscarRankingUsuarios } = require('../banco-dados/conexao');
+
+// Importar middleware compartilhado
+const authMiddleware = require('../intermediarios/autenticacao.intermediario');
+
+// ============================================
+// ROTAS PÚBLICAS (não precisam de login)
+// ============================================
+
+// Rota principal
 router.get('/', (req, res) => {
-    const dados = {
-        titulo: 'Brasil Selvagem',
-        mensagem: 'Bem-vindo à nossa plataforma!', 
-    };
-    
-    if (req.session.usuarioId) {
-        buscarUsuarioPorId(req.session.usuarioId, (erro, usuario) => {
-            if (usuario) {
-                dados.usuario = {
-                    nome: usuario.nome,
-                    nivel: usuario.nivel || 'Iniciante',
-                    pontos: usuario.pontos || 0
-                };
-            }
-            res.render('index', dados);
-        });
-    } else {
-        res.render('index', dados);
-    }
+    res.render('index-completo', {
+        title: 'Brasil Selvagem - Início',
+        usuario: req.session.usuario || null,
+        mensagem: null,
+        erro: null
+    });
 });
 
-// Páginas públicas
+// Ranking (público)
+router.get('/ranking', (req, res) => {
+    buscarRankingUsuarios((erro, ranking) => {
+        res.render('ranking', {
+            title: 'Ranking - Brasil Selvagem',
+            usuario: req.session.usuario || null,
+            mensagem: null,
+            erro: null,
+            ranking: ranking || []
+        });
+    });
+});
+
+// Biomas (público)
 router.get('/biomas', (req, res) => {
     res.render('biomas', {
-        titulo: 'Biomas Brasileiros',
-        mensagem: 'Conheça nossa fauna!'
+        title: 'Biomas - Brasil Selvagem',
+        usuario: req.session.usuario || null,
+        mensagem: null,
+        erro: null
     });
 });
 
-// Quiz (por enquanto público, depois proteger)
-router.get('/quiz', (req, res) => {
-    res.render('quiz', {
-        titulo: 'Quiz - Fauna Brasileira',
-        mensagem: 'Teste seus conhecimentos!'
+// ============================================
+// ROTAS PROTEGIDAS (precisam de login)
+// ============================================
+
+// Perfil
+router.get('/perfil', authMiddleware, (req, res) => {
+    res.render('perfil', {
+        title: 'Meu Perfil - Brasil Selvagem',
+        usuario: req.session.usuario
     });
 });
 
-// Ranking (por enquanto público)
-router.get('/ranking', (req, res) => {
-    res.render('ranking', {
-        titulo: 'Ranking',
-        mensagem: 'Top 10 jogadores'
+// Editar perfil
+router.get('/perfil/editar', authMiddleware, (req, res) => {
+    res.render('perfil_editar', {
+        title: 'Editar Perfil - Brasil Selvagem',
+        usuario: req.session.usuario,
+        mensagem: null,
+        erro: null,
+        sucesso: null
+    });
+});
+
+// ============================================
+// ROTA DE TESTE
+// ============================================
+
+router.get('/teste', (req, res) => {
+    res.send(`
+        <h1>Teste OK</h1>
+        <p>Servidor está funcionando!</p>
+        <p>Sessão ID: ${req.session.usuarioId || 'Nenhum'}</p>
+        <p>Sessão Usuário: ${JSON.stringify(req.session.usuario || {})}</p>
+        <a href="/">Voltar para home</a>
+    `);
+});
+
+router.get('/sessao-info', (req, res) => {
+    res.json({
+        usuarioId: req.session.usuarioId,
+        usuario: req.session.usuario,
+        usuarioIdDoUsuario: req.session.usuario?.id,
+        todasChaves: Object.keys(req.session)
     });
 });
 

@@ -1,28 +1,854 @@
-<div class="text-center">
-    <h1 class="display-5">🌿 Biomas Brasileiros</h1>
-    <p class="lead">Conheça a incrível fauna do nosso país!</p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Biomas - Brasil Selvagem' %></title>
     
-    <div class="row mt-4">
-        <div class="col-md-6 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🌳 Amazônia</h5>
-                    <p class="card-text">Maior floresta tropical do mundo.</p>
-                    <p><strong>Animais:</strong> Onça-pintada, Boto-cor-de-rosa, Arara-azul</p>
-                </div>
-            </div>
-        </div>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* RESET E LAYOUT PRINCIPAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <div class="col-md-6 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🌵 Cerrado</h5>
-                    <p class="card-text">Savana brasileira rica em biodiversidade.</p>
-                    <p><strong>Animais:</strong> Lobo-guará, Tamanduá-bandeira, Seriema</p>
-                </div>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            padding-top: 80px; /* IMPORTANTE: compensa a navbar fixa */
+        }
+        
+        /* NAVBAR FIXA */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #166534, #22c55e);
+            color: white;
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .navbar-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .navbar-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border-color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            padding: 40px 0 80px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        /* HEADER DA PÁGINA */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+        
+        .page-title {
+            color: #166534;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1.125rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* SEÇÃO DE INTRODUÇÃO */
+        .intro-section {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .intro-title {
+            color: #166534;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .intro-text {
+            color: #374151;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* GRID DE BIOMAS */
+        .biomas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* CARD DE BIOMA */
+        .bioma-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bioma-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .bioma-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .bioma-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #111827;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bioma-icon {
+            font-size: 1.75rem;
+        }
+        
+        .bioma-subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .bioma-content {
+            padding: 1.5rem;
+            flex: 1;
+        }
+        
+        .bioma-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .info-icon {
+            color: #22c55e;
+            font-size: 1rem;
+            margin-top: 0.2rem;
+            min-width: 20px;
+        }
+        
+        .info-text {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* ESTILOS ESPECÍFICOS POR BIOMA */
+        .amazonia {
+            border-top: 4px solid #166534;
+        }
+        
+        .amazonia .bioma-icon {
+            color: #166534;
+        }
+        
+        .cerrado {
+            border-top: 4px solid #d97706;
+        }
+        
+        .cerrado .bioma-icon {
+            color: #d97706;
+        }
+        
+        .mata-atlantica {
+            border-top: 4px solid #059669;
+        }
+        
+        .mata-atlantica .bioma-icon {
+            color: #059669;
+        }
+        
+        .caatinga {
+            border-top: 4px solid #dc2626;
+        }
+        
+        .caatinga .bioma-icon {
+            color: #dc2626;
+        }
+        
+        .pantanal {
+            border-top: 4px solid #0ea5e9;
+        }
+        
+        .pantanal .bioma-icon {
+            color: #0ea5e9;
+        }
+        
+        .pampas {
+            border-top: 4px solid #8b5cf6;
+        }
+        
+        .pampas .bioma-icon {
+            color: #8b5cf6;
+        }
+        
+        /* SEÇÃO DE CURIOSIDADES */
+        .curiosidades-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid #fcd34d;
+        }
+        
+        .curiosidades-title {
+            color: #92400e;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .curiosidades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .curiosidade-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #fbbf24;
+        }
+        
+        .curiosidade-item i {
+            color: #d97706;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .curiosidade-text {
+            color: #374151;
+            line-height: 1.6;
+        }
+        
+        /* BOTÕES DE AÇÃO */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .btn-quiz {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .btn-quiz:hover {
+            background-color: #16a34a;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-ranking {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .btn-ranking:hover {
+            background-color: #2563eb;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* FOOTER */
+        .footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            padding: 3rem 0 2rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .navbar-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-content {
+                padding: 30px 0 60px;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .biomas-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .intro-section,
+            .curiosidades-section {
+                padding: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.75rem;
+            }
+            
+            .bioma-title {
+                font-size: 1.25rem;
+            }
+            
+            .intro-title,
+            .curiosidades-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Fixa -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <span class="navbar-icon">🌳</span>
+                <span class="navbar-text">Brasil Selvagem</span>
+            </a>
+            
+            <div class="navbar-menu">
+                <a href="/" class="navbar-link">Início</a>
+                <a href="/biomas" class="navbar-link">Biomas</a>
+                <a href="/quizzes" class="navbar-link">Quiz</a>
+                <a href="/ranking" class="navbar-link">Ranking</a>
+                
+                <% if (usuario) { %>
+                    <a href="/perfil" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user"></i> <%= usuario.nome.split(' ')[0] %>
+                    </a>
+                <% } else { %>
+                    <a href="/login" class="btn btn-primary btn-sm">Entrar</a>
+                    <a href="/registro" class="btn btn-secondary btn-sm">Registrar</a>
+                <% } %>
             </div>
         </div>
-    </div>
-    
-    <a href="/perfil" class="btn btn-outline-success mt-3">← Voltar ao Perfil</a>
-</div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header da Página -->
+            <header class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-globe-americas"></i> Biomas Brasileiros
+                </h1>
+                <p class="page-subtitle">
+                    Explore a incrível diversidade dos ecossistemas do Brasil, cada um com suas características únicas, fauna e flora específicas. 
+                    Conheça os 6 biomas que fazem do nosso país um dos mais biodiversos do planeta.
+                </p>
+            </header>
+            
+            <!-- Seção de Introdução -->
+            <section class="intro-section">
+                <h2 class="intro-title">
+                    <i class="fas fa-seedling"></i> O Que São Biomas?
+                </h2>
+                <p class="intro-text">
+                    Biomas são grandes ecossistemas com condições climáticas, geológicas e biológicas semelhantes, que abrigam comunidades específicas de plantas e animais. 
+                    O Brasil possui 6 biomas principais, cada um com sua própria identidade e importância ecológica.
+                </p>
+                <p class="intro-text">
+                    Juntos, esses biomas cobrem cerca de 8,5 milhões de km² do território nacional e abrigam aproximadamente 20% de todas as espécies do planeta.
+                </p>
+            </section>
+            
+            <!-- Grid de Biomas -->
+            <div class="biomas-grid">
+                <!-- Amazônia -->
+                <div class="bioma-card amazonia">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-tree bioma-icon"></i> Amazônia
+                        </h3>
+                        <p class="bioma-subtitle">Maior floresta tropical do mundo</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Norte do Brasil (9 estados)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área:</strong> 4,2 milhões de km² (49% do território brasileiro)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Mais de 30 mil espécies de plantas</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Onça-pintada, boto-cor-de-rosa, arara-azul</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-tint info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> Produz 20% do oxigênio mundial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cerrado -->
+                <div class="bioma-card cerrado">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-sun bioma-icon"></i> Cerrado
+                        </h3>
+                        <p class="bioma-subtitle">Savana brasileira e berço das águas</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Centro-Oeste, Nordeste e Sudeste</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área:</strong> 2 milhões de km² (24% do território)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Pequizeiro, buriti, ipê, mais de 10 mil espécies</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Lobo-guará, tamanduá-bandeira, tatu-canastra</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-tint info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> Nascem 8 das 12 bacias hidrográficas brasileiras</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mata Atlântica -->
+                <div class="bioma-card mata-atlantica">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-mountain bioma-icon"></i> Mata Atlântica
+                        </h3>
+                        <p class="bioma-subtitle">Floresta mais ameaçada do Brasil</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Costa litorânea, do RN ao RS</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área original:</strong> 1,3 milhão de km² (restando apenas 12,4%)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Palmeira-juçara, pau-brasil, bromélias, orquídeas</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Mico-leão-dourado, onça-pintada, muriqui</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-home info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> Abriga 70% da população brasileira</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Caatinga -->
+                <div class="bioma-card caatinga">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-cactus bioma-icon"></i> Caatinga
+                        </h3>
+                        <p class="bioma-subtitle">Único bioma exclusivamente brasileiro</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Região Nordeste e norte de MG</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área:</strong> 844 mil km² (11% do território)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Mandacaru, xique-xique, umbuzeiro, juazeiro</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Ararinha-azul, asa-branca, tatu-bola</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-sun info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> 1/3 das espécies são endêmicas (só existem lá)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pantanal -->
+                <div class="bioma-card pantanal">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-water bioma-icon"></i> Pantanal
+                        </h3>
+                        <p class="bioma-subtitle">Maior planície alagável do mundo</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Mato Grosso e Mato Grosso do Sul</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área:</strong> 150 mil km² (1,76% do território)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Vitória-régia, buriti, ipê, mais de 3.500 espécies</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Onça-pintada, arara-azul, capivara, jacaré</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-water info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> 80% da área inunda na estação chuvosa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pampas -->
+                <div class="bioma-card pampas">
+                    <div class="bioma-header">
+                        <h3 class="bioma-title">
+                            <i class="fas fa-grass bioma-icon"></i> Pampas
+                        </h3>
+                        <p class="bioma-subtitle">Campos sulinos e berço do gaúcho</p>
+                    </div>
+                    <div class="bioma-content">
+                        <div class="bioma-info">
+                            <div class="info-row">
+                                <i class="fas fa-map-marker-alt info-icon"></i>
+                                <p class="info-text"><strong>Localização:</strong> Rio Grande do Sul</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-ruler-combined info-icon"></i>
+                                <p class="info-text"><strong>Área:</strong> 176 mil km² (2,07% do território)</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-leaf info-icon"></i>
+                                <p class="info-text"><strong>Flora:</strong> Gramíneas, figueira, butiá, mais de 3.000 espécies</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-paw info-icon"></i>
+                                <p class="info-text"><strong>Fauna:</strong> Gato-dos-pampas, veado-campeiro, perdiz</p>
+                            </div>
+                            <div class="info-row">
+                                <i class="fas fa-horse info-icon"></i>
+                                <p class="info-text"><strong>Curiosidade:</strong> Mais de 70% já foi convertido para agricultura</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção de Curiosidades -->
+            <section class="curiosidades-section">
+                <h2 class="curiosidades-title">
+                    <i class="fas fa-lightbulb"></i> Curiosidades Incríveis
+                </h2>
+                <div class="curiosidades-grid">
+                    <div class="curiosidade-item">
+                        <i class="fas fa-dna"></i>
+                        <p class="curiosidade-text">A Amazônia tem mais espécies de peixes (3.000+) que todo o Oceano Atlântico</p>
+                    </div>
+                    <div class="curiosidade-item">
+                        <i class="fas fa-thermometer-three-quarters"></i>
+                        <p class="curiosidade-text">A Caatinga pode ter temperaturas de até 45°C e menos de 300mm de chuva/ano</p>
+                    </div>
+                    <div class="curiosidade-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <p class="curiosidade-text">O Pantanal tem a maior concentração de onças-pintadas do mundo</p>
+                    </div>
+                    <div class="curiosidade-item">
+                        <i class="fas fa-hospital-user"></i>
+                        <p class="curiosidade-text">25% dos medicamentos têm origem em plantas da Mata Atlântica</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Botões de Ação -->
+            <div class="action-buttons">
+                <a href="/quizzes" class="action-btn btn-quiz">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Teste Seus Conhecimentos</span>
+                </a>
+                <a href="/ranking" class="action-btn btn-ranking">
+                    <i class="fas fa-trophy"></i>
+                    <span>Ver Ranking</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Brasil Selvagem</h4>
+                    <p>Educação ambiental interativa sobre a fauna e flora brasileira.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Navegação Rápida</h4>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Página Inicial</a></li>
+                        <li><a href="/biomas"><i class="fas fa-tree"></i> Biomas</a></li>
+                        <li><a href="/quizzes"><i class="fas fa-question-circle"></i> Quizzes</a></li>
+                        <li><a href="/ranking"><i class="fas fa-trophy"></i> Ranking</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Sua Conta</h4>
+                    <ul class="footer-links">
+                        <% if (usuario) { %>
+                            <li><a href="/perfil"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                        <% } else { %>
+                            <li><a href="/login"><i class="fas fa-sign-in-alt"></i> Entrar</a></li>
+                            <li><a href="/registro"><i class="fas fa-user-plus"></i> Registrar</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Brasil Selvagem - Projeto Integrador UNCISAL</p>
+                <p>Sistemas para Internet - Semestre 2025.2</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                    Fontes: IBGE, MMA, WWF Brasil, Instituto Socioambiental
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

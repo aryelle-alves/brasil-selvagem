@@ -82,14 +82,43 @@ function deletarUsuario(usuarioId, callback) {
     });
 }
 
-// ============================================
-// EXPORTE TODAS AS FUNÇÕES
-// ============================================
+// Função para atualizar pontos do usuário
+function atualizarPontosUsuario(usuarioId, novosPontos, callback) {
+    // Determinar nível baseado nos pontos
+    let novoNivel = 'Iniciante';
+    if (novosPontos >= 500) novoNivel = 'Mestre';
+    else if (novosPontos >= 300) novoNivel = 'Avançado';
+    else if (novosPontos >= 100) novoNivel = 'Intermediário';
+    
+    const sql = `UPDATE usuarios SET pontos = ?, nivel = ? WHERE id = ?`;
+    
+    console.log(`🔧 Atualizando pontos: ID ${usuarioId} → ${novosPontos} pts (${novoNivel})`);
+    
+    banco.run(sql, [novosPontos, novoNivel, usuarioId], function(erro) {
+        if (erro) {
+            console.error('❌ Erro ao atualizar pontos:', erro.message);
+        } else {
+            console.log(`✅ Pontos atualizados. Mudanças: ${this.changes}`);
+        }
+        callback(erro, this.changes);
+    });
+}
+
+// Adicionar antes do module.exports:
+function buscarRankingUsuarios(callback) {
+    const sql = `SELECT nome, pontos, nivel FROM usuarios 
+                 ORDER BY pontos DESC, data_criacao ASC 
+                 LIMIT 10`;
+    banco.all(sql, [], callback);
+}
+
 module.exports = {
     banco,
-    inserirUsuario,      // CREATE
-    buscarUsuarioPorEmail, // READ
-    buscarUsuarioPorId,    // READ
-    atualizarUsuario,    // UPDATE
-    deletarUsuario       // DELETE
+    inserirUsuario,
+    buscarUsuarioPorEmail,
+    buscarUsuarioPorId,
+    atualizarUsuario,
+    deletarUsuario,
+    atualizarPontosUsuario,
+    buscarRankingUsuarios
 };

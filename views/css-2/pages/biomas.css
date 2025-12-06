@@ -1,0 +1,99 @@
+/* BIOMAS.CSS - PÁGINA DE BIOMAS */
+.biomas-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.biomas-header {
+    text-align: center;
+    margin-bottom: var(--espaco-2xl);
+}
+
+.biomas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--espaco-xl);
+    margin-top: var(--espaco-xl);
+}
+
+.bioma-card {
+    background: white;
+    border-radius: var(--raio-lg);
+    overflow: hidden;
+    box-shadow: var(--sombra-md);
+    transition: all 0.3s ease;
+}
+
+.bioma-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-lg);
+}
+
+.bioma-header {
+    padding: var(--espaco-lg);
+    color: white;
+    text-align: center;
+}
+
+.bioma-amazonia .bioma-header { background: linear-gradient(135deg, #059669, #047857); }
+.bioma-cerrado .bioma-header { background: linear-gradient(135deg, #D97706, #B45309); }
+.bioma-mata-atlantica .bioma-header { background: linear-gradient(135deg, #10B981, #059669); }
+.bioma-pantanal .bioma-header { background: linear-gradient(135deg, #0EA5E9, #0284C7); }
+.bioma-caatinga .bioma-header { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.bioma-pampa .bioma-header { background: linear-gradient(135deg, #84CC16, #65A30D); }
+
+.bioma-icon {
+    font-size: 3rem;
+    margin-bottom: var(--espaco-sm);
+}
+
+.bioma-body {
+    padding: var(--espaco-lg);
+}
+
+.bioma-title {
+    font-size: 1.5rem;
+    color: var(--cinza-900);
+    margin-bottom: var(--espaco-sm);
+}
+
+.bioma-description {
+    color: var(--cinza-600);
+    margin-bottom: var(--espaco-lg);
+    line-height: 1.6;
+}
+
+.bioma-animals {
+    margin-top: var(--espaco-md);
+}
+
+.bioma-animals h4 {
+    font-size: 1.125rem;
+    color: var(--cinza-800);
+    margin-bottom: var(--espaco-sm);
+}
+
+.bioma-animals ul {
+    list-style: none;
+    padding: 0;
+}
+
+.bioma-animals li {
+    padding: var(--espaco-xs) 0;
+    border-bottom: 1px solid var(--cinza-200);
+    color: var(--cinza-700);
+}
+
+.bioma-animals li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .biomas-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bioma-card {
+        margin: 0 var(--espaco-sm);
+    }
+}

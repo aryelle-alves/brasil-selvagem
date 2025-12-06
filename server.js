@@ -1,27 +1,13 @@
-const rotas = require('./rotas');
-aplicativo.use('/', rotas);
-
-// INICIAR SERVIDOR
-aplicativo.listen(PORTA, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORTA}`);
-    console.log('📁 Estrutura:');
-    console.log('   • /rotas/          - Rotas organizadas');
-    console.log('   • /controladores/  - Controladores');
-    console.log('   • /middlewares/    - Middlewares');
-    console.log('   • /banco-dados/    - Banco de dados');
-    console.log('   • /views/          - Templates EJS');
-});
-
-// -----------------------
-
 // server.js
 const { aplicativo, PORTA } = require('./app');
 
-// Importar rotas
-const rotas = require('./rotas');
+// IMPORTAR ROTAS CENTRALIZADAS
+const rotas = require('./rotas'); // Isso importa o index.js
+
+// USAR ROTAS
 aplicativo.use('/', rotas);
 
-// Iniciar servidor
+// INICIAR SERVIDOR
 aplicativo.listen(PORTA, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${PORTA}`);
     console.log('\n🎯 Rotas disponíveis:');
@@ -29,9 +15,13 @@ aplicativo.listen(PORTA, () => {
     console.log('   • /login            - Login');
     console.log('   • /registro         - Registro');
     console.log('   • /perfil           - Perfil (requer login)');
-    console.log('   • /perfil/editar    - Editar perfil');
-    console.log('   • /quiz             - Quiz');
-    console.log('   • /ranking          - Ranking');
-    console.log('   • /biomas           - Biomas');
+    console.log('   • /perfil/editar    - Editar perfil (requer login)');
+    console.log('   • /quizzes          - Lista de quizzes (requer login)');
+    console.log('   • /quiz/:quizId     - Quiz específico (requer login)');
+    console.log('   • /ranking          - Ranking (público)');
+    console.log('   • /biomas           - Biomas (público)');
     console.log('   • /logout           - Logout');
+    console.log('   • /teste            - Página de teste');
+    console.log('   • /teste-quiz       - Teste das rotas de quiz');
+    console.log('\n📊 Banco de dados SQLite pronto!');
 });

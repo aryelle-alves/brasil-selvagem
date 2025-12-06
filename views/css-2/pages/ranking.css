@@ -1,0 +1,81 @@
+/* RANKING.CSS - PÁGINA DE RANKING */
+.ranking-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.ranking-header {
+    text-align: center;
+    margin-bottom: var(--espaco-2xl);
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--espaco-xl) 0;
+    background: white;
+    border-radius: var(--raio-lg);
+    overflow: hidden;
+    box-shadow: var(--sombra-md);
+}
+
+.ranking-table thead {
+    background: linear-gradient(135deg, var(--verde-escuro), var(--verde-principal));
+    color: white;
+}
+
+.ranking-table th {
+    padding: var(--espaco-md) var(--espaco-lg);
+    text-align: left;
+    font-weight: 600;
+}
+
+.ranking-table tbody tr {
+    border-bottom: 1px solid var(--cinza-200);
+    transition: background-color 0.2s ease;
+}
+
+.ranking-table tbody tr:hover {
+    background-color: var(--verde-claro);
+}
+
+.ranking-table td {
+    padding: var(--espaco-md) var(--espaco-lg);
+    vertical-align: middle;
+}
+
+.ranking-position {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--verde-principal);
+    text-align: center;
+}
+
+.ranking-user {
+    font-weight: 600;
+    color: var(--cinza-900);
+}
+
+.ranking-points {
+    font-weight: 700;
+    color: var(--laranja);
+}
+
+.ranking-level {
+    font-size: 0.875rem;
+}
+
+.top-1 { color: #FFD700 !important; } /* Ouro */
+.top-2 { color: #C0C0C0 !important; } /* Prata */
+.top-3 { color: #CD7F32 !important; } /* Bronze */
+
+@media (max-width: 768px) {
+    .ranking-table {
+        font-size: 0.875rem;
+    }
+    
+    .ranking-table th,
+    .ranking-table td {
+        padding: var(--espaco-sm);
+    }
+}

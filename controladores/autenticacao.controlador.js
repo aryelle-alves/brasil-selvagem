@@ -4,8 +4,10 @@ const { inserirUsuario, buscarUsuarioPorEmail } = require('../banco-dados/conexa
 module.exports = {
     mostrarLogin: (req, res) => {
         res.render('login', {
-            titulo: 'Login',
-            erro: req.query.erro || null
+            title: 'Login - Brasil Selvagem',
+            usuario: req.session.usuario || null,
+            erro: req.query.erro || null,
+            sucesso: req.query.sucesso || null
         });
     },
 
@@ -16,8 +18,10 @@ module.exports = {
         
         if (!email || !senha) {
             return res.render('login', {
-                titulo: 'Login',
-                erro: 'Email e senha são obrigatórios!'
+                title: 'Login - Brasil Selvagem',
+                usuario: null,
+                erro: 'Email e senha são obrigatórios!',
+                sucesso: null
             });
         }
         
@@ -25,16 +29,20 @@ module.exports = {
             if (erro) {
                 console.error('❌ Erro ao buscar usuário:', erro);
                 return res.render('login', {
-                    titulo: 'Login',
-                    erro: 'Erro no servidor. Tente novamente!'
+                    title: 'Login - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Erro no servidor. Tente novamente!',
+                    sucesso: null
                 });
             }
             
             if (!usuario) {
                 console.log('❌ Usuário não encontrado:', email);
                 return res.render('login', {
-                    titulo: 'Login',
-                    erro: 'Email ou senha incorretos!'
+                    title: 'Login - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Email ou senha incorretos!',
+                    sucesso: null
                 });
             }
             
@@ -44,23 +52,46 @@ module.exports = {
                 if (!senhaValida) {
                     console.log('❌ Senha incorreta para:', email);
                     return res.render('login', {
-                        titulo: 'Login',
-                        erro: 'Email ou senha incorretos!'
+                        title: 'Login - Brasil Selvagem',
+                        usuario: null,
+                        erro: 'Email ou senha incorretos!',
+                        sucesso: null
                     });
                 }
                 
-                // Criar sessão
+                // Criar objeto de sessão
+                req.session.usuario = {
+                    id: usuario.id,
+                    nome: usuario.nome,
+                    email: usuario.email,
+                    pontos: usuario.pontos || 0,
+                    nivel: usuario.nivel || 'Iniciante',
+                    ranking: usuario.ranking || null
+                };
                 req.session.usuarioId = usuario.id;
-                req.session.usuarioNome = usuario.nome;
-                req.session.usuarioEmail = usuario.email;
-                req.session.usuarioPontos = usuario.pontos || 0;
-                
-                res.redirect('/perfil');
+
+                // SALVAR A SESSÃO EXPLICITAMENTE - NOVO CÓDIGO ADICIONADO
+                req.session.save((err) => {
+                    if (err) {
+                        console.error('❌ Erro ao salvar sessão:', err);
+                        return res.render('login', {
+                            title: 'Login - Brasil Selvagem',
+                            usuario: null,
+                            erro: 'Erro ao iniciar sessão. Tente novamente.'
+                        });
+                    }
+                    
+                    console.log('✅ Login bem-sucedido - Sessão salva:', req.session.usuario.nome);
+                    res.redirect('/perfil');
+                });
+
             } catch (erroVerificacao) {
                 console.error('❌ Erro ao verificar senha:', erroVerificacao);
                 res.render('login', {
-                    titulo: 'Login',
-                    erro: 'Erro ao verificar credenciais!'
+                    title: 'Login - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Erro ao verificar credenciais!',
+                    sucesso: null
                 });
             }
         });
@@ -68,8 +99,10 @@ module.exports = {
 
     mostrarRegistro: (req, res) => {
         res.render('registro', {
-            titulo: 'Registro',
-            erro: req.query.erro || null
+            title: 'Registrar - Brasil Selvagem',
+            usuario: req.session.usuario || null,
+            erro: req.query.erro || null,
+            sucesso: req.query.sucesso || null
         });
     },
 
@@ -84,15 +117,19 @@ module.exports = {
         
         if (!nome || !email || !senha) {
             return res.render('registro', {
-                titulo: 'Registro',
-                erro: 'Todos os campos são obrigatórios!'
+                title: 'Registrar - Brasil Selvagem',
+                usuario: null,
+                erro: 'Todos os campos são obrigatórios!',
+                sucesso: null
             });
         }
         
         if (!seguranca.validarEmail(email)) {
             return res.render('registro', {
-                titulo: 'Registro',
-                erro: 'Email inválido! Use formato: exemplo@email.com'
+                title: 'Registrar - Brasil Selvagem',
+                usuario: null,
+                erro: 'Email inválido! Use formato: exemplo@email.com',
+                sucesso: null
             });
         }
         
@@ -100,15 +137,19 @@ module.exports = {
             if (erro) {
                 console.error('❌ Erro ao buscar usuário:', erro);
                 return res.render('registro', {
-                    titulo: 'Registro',
-                    erro: 'Erro no servidor. Tente novamente!'
+                    title: 'Registrar - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Erro no servidor. Tente novamente!',
+                    sucesso: null
                 });
             }
             
             if (usuarioExistente) {
                 return res.render('registro', {
-                    titulo: 'Registro',
-                    erro: 'Este email já está cadastrado!'
+                    title: 'Registrar - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Este email já está cadastrado!',
+                    sucesso: null
                 });
             }
             
@@ -120,33 +161,59 @@ module.exports = {
                     if (erroInserir) {
                         console.error('❌ Erro ao inserir usuário:', erroInserir);
                         return res.render('registro', {
-                            titulo: 'Registro',
-                            erro: 'Erro ao criar conta. Tente novamente!'
+                            title: 'Registrar - Brasil Selvagem',
+                            usuario: null,
+                            erro: 'Erro ao criar conta. Tente novamente!',
+                            sucesso: null
                         });
                     }
                     
                     console.log('✅ Usuário criado com ID:', usuarioId);
                     
-                    // Criar sessão
+                    // Criar objeto de sessão
+                    req.session.usuario = {
+                        id: usuarioId,
+                        nome: nome,
+                        email: email,
+                        pontos: 0,
+                        nivel: 'Iniciante',
+                        ranking: null
+                    };
                     req.session.usuarioId = usuarioId;
-                    req.session.usuarioNome = nome;
-                    req.session.usuarioEmail = email;
-                    req.session.usuarioPontos = 0;
                     
-                    res.redirect('/perfil');
+                    // SALVAR A SESSÃO EXPLICITAMENTE - NOVO CÓDIGO ADICIONADO
+                    req.session.save((err) => {
+                        if (err) {
+                            console.error('❌ Erro ao salvar sessão:', err);
+                            return res.render('registro', {
+                                title: 'Registrar - Brasil Selvagem',
+                                usuario: null,
+                                erro: 'Erro ao criar sessão. Tente novamente.'
+                            });
+                        }
+                        
+                        console.log('✅ Registro bem-sucedido - Sessão salva:', nome);
+                        res.redirect('/perfil');
+                    });
                 });
             } catch (erroHash) {
                 console.error('❌ Erro no hash:', erroHash);
                 res.render('registro', {
-                    titulo: 'Registro',
-                    erro: 'Erro ao processar senha. Tente novamente!'
+                    title: 'Registrar - Brasil Selvagem',
+                    usuario: null,
+                    erro: 'Erro ao processar senha. Tente novamente!',
+                    sucesso: null
                 });
             }
         });
     },
 
     processarLogout: (req, res) => {
-        req.session.destroy();
-        res.redirect('/');
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('❌ Erro ao fazer logout:', err);
+            }
+            res.redirect('/');
+        });
     }
 };

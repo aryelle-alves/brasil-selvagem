@@ -1,23 +1,301 @@
-<div class="text-center">
-    <h1 class="display-5">🎯 Quiz - Fauna Brasileira</h1>
-    <p class="lead">Teste seus conhecimentos sobre animais brasileiros!</p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Brasil Selvagem</title>
     
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Pergunta 1/5</h5>
-            <p class="card-text">Qual é o maior felino das Américas?</p>
-            
-            <div class="list-group">
-                <button class="list-group-item list-group-item-action">Leão</button>
-                <button class="list-group-item list-group-item-action">Puma</button>
-                <button class="list-group-item list-group-item-action active">Onça-pintada</button>
-                <button class="list-group-item list-group-item-action">Jaguatirica</button>
-            </div>
-            
-            <div class="mt-4">
-                <button class="btn btn-success">Próxima Pergunta</button>
-                <a href="/perfil" class="btn btn-outline-secondary">Voltar ao Perfil</a>
+    <style>
+        /* ESTILOS MÍNIMOS E SEGUROS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f5f5f5; 
+            padding-top: 60px;
+        }
+        
+        /* NAVBAR SIMPLES */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: green;
+            color: white;
+            padding: 15px 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .main {
+            padding: 40px 20px;
+            min-height: calc(100vh - 100px);
+        }
+        
+        .quiz-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: darkgreen;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        /* PERGUNTAS */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .question h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .option:hover {
+            background: #f0f8f0;
+            border-color: green;
+        }
+        
+        /* BOTÕES */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: darkgreen;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+        
+        /* ALERTAS */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        /* FOOTER SIMPLES */
+        .footer {
+            background: #333;
+            color: #aaa;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR SIMPLES -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <a href="/" class="logo">🌳 Brasil Selvagem</a>
+                <div class="nav-links">
+                    <a href="/">Início</a>
+                    <a href="/biomas">Biomas</a>
+                    <a href="/quizzes">Quiz</a>
+                    <a href="/ranking">Ranking</a>
+                    <% if (usuario) { %>
+                        <a href="/perfil" style="background: #fff; color: green; padding: 5px 15px; border-radius: 5px;">
+                            👤 <%= usuario.nome.split(' ')[0] %>
+                        </a>
+                    <% } else { %>
+                        <a href="/login" style="background: #fff; color: green; padding: 5px 15px; border-radius: 5px;">
+                            Entrar
+                        </a>
+                    <% } %>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main">
+        <div class="container">
+            <div class="quiz-box">
+                <!-- TÍTULO -->
+                <h1>
+                    <% if (quiz && quiz.titulo) { %>
+                        <%= quiz.titulo %>
+                    <% } else { %>
+                        Quiz Brasil Selvagem
+                    <% } %>
+                </h1>
+                
+                <p class="subtitle">
+                    <% if (quiz && quiz.descricao) { %>
+                        <%= quiz.descricao %>
+                    <% } else { %>
+                        Teste seus conhecimentos sobre a fauna e flora brasileira
+                    <% } %>
+                </p>
+                
+                <!-- MENSAGENS DE ERRO -->
+                <% if (erro) { %>
+                    <div class="alert alert-error">
+                        <strong>Erro:</strong> <%= erro %>
+                        <div style="margin-top: 10px;">
+                            <a href="/quizzes" style="background: #6c757d; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;">
+                                Voltar para Quizzes
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <!-- FORMULÁRIO DO QUIZ -->
+                <% if (quiz && perguntas && perguntas.length > 0) { %>
+                    <form action="/quiz/<%= quiz.id %>/responder" method="POST" id="quizForm">
+                        <% perguntas.forEach((pergunta, index) => { %>
+                            <div class="question" id="question-<%= index %>">
+                                <h3>Pergunta <%= index + 1 %>: <%= pergunta.pergunta %></h3>
+                                
+                                <% pergunta.opcoes.forEach((opcao, opcaoIndex) => { %>
+                                    <label class="option">
+                                        <input type="radio" 
+                                               name="respostas[pergunta_<%= pergunta.id %>]" 
+                                               value="<%= opcaoIndex %>"
+                                               required>
+                                        <strong><%= String.fromCharCode(65 + opcaoIndex) %>)</strong> <%= opcao %>
+                                    </label>
+                                <% }) %>
+                            </div>
+                        <% }) %>
+                        
+                        <button type="submit" class="submit-btn">
+                            📤 Enviar Respostas
+                        </button>
+                        
+                        <a href="/quizzes" class="back-link">
+                            ← Voltar para lista de quizzes
+                        </a>
+                    </form>
+                    
+                    <!-- VALIDAÇÃO SIMPLES - CORRIGIDA -->
+                    <script>
+                        document.getElementById('quizForm').addEventListener('submit', function(e) {
+                            // Contar quantas perguntas existem
+                            const totalQuestions = document.querySelectorAll('.question').length;
+                            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+                            
+                            if (answered < totalQuestions) {
+                                e.preventDefault();
+                                alert('⚠️ Você respondeu ' + answered + ' de ' + totalQuestions + ' perguntas.\n\nFaltam ' + (totalQuestions - answered) + ' pergunta(s)!');
+                                return false;
+                            }
+                            
+                            // Confirmação opcional
+                            if (!confirm('📤 Enviar respostas?\n\nVocê não poderá alterar após enviar!')) {
+                                e.preventDefault();
+                                return false;
+                            }
+                            
+                            return true;
+                        });
+                    </script>
+                    
+                <% } else if (!erro) { %>
+                    <!-- SEM PERGUNTAS -->
+                    <div class="alert alert-warning">
+                        <p>Este quiz não possui perguntas no momento.</p>
+                        <div style="margin-top: 15px;">
+                            <a href="/quizzes" style="background: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">
+                                Ver outros quizzes disponíveis
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <!-- PONTUAÇÃO DO USUÁRIO -->
+                <% if (usuario && usuarioPontos) { %>
+                    <div style="margin-top: 20px; padding: 10px; background: #e7f3e7; border-radius: 5px; text-align: center;">
+                        <strong>💰 Sua pontuação atual:</strong> <%= usuarioPontos %> pontos
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER SIMPLES -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Brasil Selvagem - Projeto Integrador UNCISAL</p>
+            <p style="font-size: 14px; margin-top: 10px;">Sistemas para Internet - 2025.2</p>
+        </div>
+    </footer>
+</body>
+</html>

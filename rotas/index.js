@@ -8,10 +8,13 @@ const usuarioRotas = require('./usuario.rotas');
 const paginasRotas = require('./paginas.rotas');
 const quizRotas = require('./quiz.rotas');
 
-// Agrupar rotas
+// Agrupar rotas - ORDEM É CRÍTICA!
+// 1. Primeiro rotas específicas com parâmetros (:quizId)
+// 2. Depois rotas gerais
+
+router.use('/', quizRotas);         // Quiz - COLOCAR PRIMEIRO
 router.use('/', paginasRotas);      // Páginas públicas
 router.use('/', autenticacaoRotas); // Autenticação
 router.use('/', usuarioRotas);      // Usuário
-router.use('/', quizRotas);         // Quiz
 
 module.exports = router;

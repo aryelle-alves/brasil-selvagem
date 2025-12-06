@@ -1,0 +1,31 @@
+/* AUTH.CSS - LOGIN E REGISTRO */
+.auth-container {
+    max-width: 500px;
+    margin: var(--espaco-2xl) auto;
+    padding: 0 var(--espaco-sm);
+}
+
+.auth-card {
+    background: white;
+    border-radius: var(--raio-lg);
+    box-shadow: var(--sombra-lg);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: linear-gradient(135deg, var(--verde-principal), var(--verde-escuro));
+    color: white;
+    padding: var(--espaco-xl);
+    text-align: center;
+}
+
+.auth-body {
+    padding: var(--espaco-xl);
+}
+
+.auth-footer {
+    padding: var(--espaco-md) var(--espaco-xl);
+    text-align: center;
+    border-top: 1px solid var(--cinza-200);
+    background: var(--cinza-50);
+}

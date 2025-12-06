@@ -1,0 +1,60 @@
+/* PROFILE.CSS - PERFIL DO USUÁRIO */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: var(--espaco-2xl);
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-principal), var(--laranja));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--espaco-lg);
+    font-size: 3rem;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--espaco-md);
+    margin: var(--espaco-xl) 0;
+}
+
+.profile-stat {
+    text-align: center;
+    padding: var(--espaco-lg);
+    background: white;
+    border-radius: var(--raio-lg);
+    border: 1px solid var(--cinza-200);
+}
+
+.profile-stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--verde-principal);
+    margin-bottom: var(--espaco-xs);
+}
+
+.profile-stat-label {
+    font-size: 0.875rem;
+    color: var(--cinza-600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.profile-actions {
+    display: flex;
+    gap: var(--espaco-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--espaco-xl);
+}

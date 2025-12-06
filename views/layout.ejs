@@ -1,29 +1,121 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %> - Brasil Selvagem</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <title><%= title || 'Brasil Selvagem' %></title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos de emergência para garantir layout */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px 0;
+            min-height: 60vh;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                🐆 Brasil Selvagem
-            </a>
-        </div>
-    </nav>
-    
-    <main class="container mt-4">
-        <%- body %>
-    </main>
-    
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>&copy; 2025 Brasil Selvagem</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="page-wrapper">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand" href="/">
+                        <span class="navbar-icon">🌳</span>
+                        <span class="navbar-text">Brasil Selvagem</span>
+                    </a>
+                    
+                    <div class="navbar-menu d-flex gap-3 align-items-center">
+                        <a href="/" class="navbar-link">Início</a>
+                        <a href="/biomas" class="navbar-link">Biomas</a>
+                        <a href="/quizzes" class="navbar-link">Quiz</a>
+                        <a href="/ranking" class="navbar-link">Ranking</a>
+                        
+                        <% if (usuario) { %>
+                            <a href="/perfil" class="btn btn-primary btn-sm">
+                                <i class="fas fa-user"></i> <%= usuario.nome.split(' ')[0] %>
+                            </a>
+                        <% } else { %>
+                            <a href="/login" class="btn btn-primary btn-sm">Entrar</a>
+                            <a href="/registro" class="btn btn-secondary btn-sm">Registrar</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Mensagens -->
+                <% if (mensagem) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> <%= mensagem %>
+                    </div>
+                <% } %>
+                
+                <% if (erro) { %>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> <%= erro %>
+                    </div>
+                <% } %>
+                
+                <!-- Conteúdo da página -->
+                <%- body %>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4 class="text-white">Brasil Selvagem</h4>
+                        <p class="text-cinza-400">Educação ambiental interativa</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4 class="text-white">Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/biomas">Biomas</a></li>
+                            <li><a href="/quizzes">Quiz</a></li>
+                            <li><a href="/ranking">Ranking</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4 class="text-white">Projeto</h4>
+                        <p class="text-cinza-400">
+                            Projeto Integrador<br>
+                            UNCISAL - 2025.2
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom text-center">
+                    <p>&copy; 2025 Brasil Selvagem - Projeto acadêmico UNCISAL</p>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

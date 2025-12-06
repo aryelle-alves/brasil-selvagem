@@ -1,0 +1,14 @@
+/* views/css-2/estilos.css */
+/* Importa os estilos principais */
+@import url('core.css');
+@import url('utils.css');
+@import url('layout.css');
+@import url('components.css');
+
+/* Importa os estilos das páginas específicas */
+@import url('pages/auth.css');
+@import url('pages/home.css');
+@import url('pages/profile.css');
+@import url('pages/quiz.css');
+@import url('pages/ranking.css');
+@import url('pages/biomas.css');
